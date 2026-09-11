@@ -17,7 +17,37 @@ const calculateTotal = (list) =>
 const getUniqueCategories = (list) => 
   [...new Set(list.map(t => t.category))];
 
-const validData = cleanTransactions(transactions);
-console.log('清洗后数据：', validData);
-console.log('总支出：', calculateTotal(validData).toFixed(2));
-console.log('消费类别：', getUniqueCategories(validData));
+const filterByCategory = (list, category) => 
+  list.filter(t => t.category === category);
+
+const findMaxExpense = (list) => {
+  if (list.length === 0) return null;
+  return list.reduce((max, t) => t.amount > max.amount ? t : max, list[0]);
+};
+
+const generateReport = (list) => {
+  const valid = cleanTransactions(list);
+  if (valid.length === 0) {
+    return '没有有效的消费记录';
+  }
+  const total = calculateTotal(valid);
+  const max = findMaxExpense(valid);
+  const categories = getUniqueCategories(valid).join('、');
+  return `共记录${valid.length}笔消费，总支出${total.toFixed(2)}元。
+最大单笔支出：${max.amount}元（${max.category} - ${max.note}）。
+涉及类别：${categories}`;
+};
+
+try {
+  console.log('清洗后数据：', cleanTransactions(transactions));
+  console.log('总支出：', calculateTotal(cleanTransactions(transactions)).toFixed(2));
+  console.log('消费类别：', getUniqueCategories(cleanTransactions(transactions)));
+  console.log('餐饮类明细：', filterByCategory(cleanTransactions(transactions), '餐饮'));
+  console.log('\n--- 最终报告 ---');
+  console.log(generateReport(transactions));
+  
+  console.log('\n--- 空数据测试 ---');
+  console.log(generateReport([]));
+} catch (err) {
+  console.error('程序运行出错：', err.message);
+}ories(validData));
