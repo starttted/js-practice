@@ -8,4 +8,16 @@ const transactions = [
   { id: 7, category: '餐饮', amount: 88,   note: '聚餐' }
 ];
 
-console.table(transactions);
+const cleanTransactions = (list) => 
+  list.filter(t => typeof t.amount === 'number' && t.amount > 0);
+
+const calculateTotal = (list) => 
+  list.reduce((sum, t) => sum + t.amount, 0);
+
+const getUniqueCategories = (list) => 
+  [...new Set(list.map(t => t.category))];
+
+const validData = cleanTransactions(transactions);
+console.log('清洗后数据：', validData);
+console.log('总支出：', calculateTotal(validData).toFixed(2));
+console.log('消费类别：', getUniqueCategories(validData));
