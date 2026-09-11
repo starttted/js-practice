@@ -50,4 +50,4 @@ try {
   console.log(generateReport([]));
 } catch (err) {
   console.error('程序运行出错：', err.message);
-}ories(validData));
+}
